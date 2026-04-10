@@ -196,21 +196,14 @@ depends: manobrowser
 
 ### 数据持久化（⚠️ 必须执行）
 
-**每个平台采集完毕后，立即将全量原始数据写入本地文件。每完成一个就保存一个。**
+**所有 ClawCap Skill 共享 `clawcap-data/` 目录**，按人组织。对方的数据存到 `clawcap-data/{对方昵称}/`：
 
-```
-date-reports/
-├── {target_nickname}/
-│   ├── douyin.json
-│   ├── xiaohongshu.json
-│   ├── weibo.json
-│   ├── douban.json
-│   ├── bilibili.json
-│   └── metadata.json
-└── {日期}_report.md           ← 最终情报简报
-```
+- `clawcap-data/{昵称}/{platform}.json` 存在 + < 7天 → **直接复用**
+- 不存在 → 正常采集
 
-**执行方式**：子 Skill 的 JS 脚本将数据 `return JSON.stringify(...)` 返回到上下文后，**你必须立即将完整 JSON 写入对应文件**。保存完整数据，不是摘要。
+**每个平台采集完毕后，立即将全量原始数据写入 `clawcap-data/{昵称}/{platform}.json`**。保存完整数据，不是摘要。报告输出到 `clawcap-data/reports/date_report_{昵称}_{日期}.md`。
+
+> 💡 如果用户之前用月老扫过同一个人，数据已经在 `clawcap-data/{昵称}/` 里了，直接复用。
 
 ---
 
