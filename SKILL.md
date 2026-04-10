@@ -192,7 +192,25 @@ depends: manobrowser
 1. **导航到对方主页**：用用户提供的链接直接 `chrome_navigate`
 2. **处理隐私设置**：如果对方设了"仅粉丝可见"等限制，跳过该平台并告知用户
 3. **不关注对方**：采集过程中不要点"关注"按钮
-4. **每个平台采集完保存**：写入 `date-reports/{日期}_raw_data.json`
+4. **每个平台采集完保存**：见下方「数据持久化」
+
+### 数据持久化（⚠️ 必须执行）
+
+**每个平台采集完毕后，立即将全量原始数据写入本地文件。每完成一个就保存一个。**
+
+```
+date-reports/
+├── {target_nickname}/
+│   ├── douyin.json
+│   ├── xiaohongshu.json
+│   ├── weibo.json
+│   ├── douban.json
+│   ├── bilibili.json
+│   └── metadata.json
+└── {日期}_report.md           ← 最终情报简报
+```
+
+**执行方式**：子 Skill 的 JS 脚本将数据 `return JSON.stringify(...)` 返回到上下文后，**你必须立即将完整 JSON 写入对应文件**。保存完整数据，不是摘要。
 
 ---
 
